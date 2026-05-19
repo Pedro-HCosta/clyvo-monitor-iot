@@ -6,6 +6,7 @@ from datetime import datetime
 class CSVLogger:
     def __init__(self, file_path):
         self.file_path = file_path
+
         self.headers = [
             "timestamp",
             "regiao_atual",

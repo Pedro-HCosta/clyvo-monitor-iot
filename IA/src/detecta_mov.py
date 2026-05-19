@@ -19,7 +19,7 @@ class MotionDetector:
 
         if self.previous_frame is None:
             self.previous_frame = current_frame
-            return None, current_frame
+            return None
 
         difference = cv2.absdiff(self.previous_frame, current_frame)
         threshold = cv2.threshold(difference, 25, 255, cv2.THRESH_BINARY)[1]
@@ -47,20 +47,16 @@ class MotionDetector:
         self.previous_frame = current_frame
 
         if largest_contour is None:
-            return None, current_frame
+            return None
 
         x, y, w, h = cv2.boundingRect(largest_contour)
-        center_x = x + w // 2
-        center_y = y + h // 2
 
-        motion_data = {
+        return {
             "x": x,
             "y": y,
             "w": w,
             "h": h,
-            "center_x": center_x,
-            "center_y": center_y,
+            "center_x": x + w // 2,
+            "center_y": y + h // 2,
             "area": largest_area
         }
-
-        return motion_data, current_frame

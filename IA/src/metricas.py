@@ -29,7 +29,7 @@ class BehaviorMetrics:
 
         self.was_moving = False
         self.last_movement_count_time = 0
-        self.movement_cooldown_seconds = 1.0
+        self.movement_cooldown_seconds = 1.5
 
     def update(self, motion_detected, region):
         now = time.time()

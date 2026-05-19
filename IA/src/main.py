@@ -3,10 +3,11 @@ import time
 
 from camera import Camera
 from config import CAMERA_INDEX, MIN_CONTOUR_AREA, CSV_INTERVAL_SECONDS, DATA_FILE_PATH, WINDOW_NAME, REGIONS
-from motion_detector import MotionDetector
-from region_detector import RegionDetector
-from metrics import BehaviorMetrics
-from csv_logger import CSVLogger
+from detecta_mov import MotionDetector
+from detecta_reg import RegionDetector
+from metricas import BehaviorMetrics
+from csv_registro import CSVLogger
+from classifica_comportamento import BehaviorClassifier
 
 
 def draw_regions(frame):
@@ -63,59 +64,16 @@ def draw_motion(frame, motion_data):
     )
 
 
-def draw_info(frame, metrics):
+def draw_info(frame, metrics, behavior_class):
     data = metrics.to_dict()
     alert = metrics.get_alert()
 
-    cv2.putText(
-        frame,
-        f"Status: {data['status']}",
-        (20, 35),
-        cv2.FONT_HERSHEY_SIMPLEX,
-        0.7,
-        (0, 255, 0),
-        2
-    )
-
-    cv2.putText(
-        frame,
-        f"Regiao: {data['regiao_atual']}",
-        (20, 70),
-        cv2.FONT_HERSHEY_SIMPLEX,
-        0.7,
-        (0, 255, 255),
-        2
-    )
-
-    cv2.putText(
-        frame,
-        f"Parado: {data['tempo_parado_seg']}s",
-        (20, 105),
-        cv2.FONT_HERSHEY_SIMPLEX,
-        0.7,
-        (0, 255, 255),
-        2
-    )
-
-    cv2.putText(
-        frame,
-        f"Movimentos: {data['movimentos']}",
-        (20, 140),
-        cv2.FONT_HERSHEY_SIMPLEX,
-        0.7,
-        (255, 255, 0),
-        2
-    )
-
-    cv2.putText(
-        frame,
-        alert,
-        (20, 175),
-        cv2.FONT_HERSHEY_SIMPLEX,
-        0.7,
-        (0, 0, 255),
-        2
-    )
+    cv2.putText(frame, f"Status: {data['status']}", (20, 35), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+    cv2.putText(frame, f"Regiao: {data['regiao_atual']}", (20, 70), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
+    cv2.putText(frame, f"Parado: {data['tempo_parado_seg']}s", (20, 105), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
+    cv2.putText(frame, f"Movimentos: {data['movimentos']}", (20, 140), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 0), 2)
+    cv2.putText(frame, f"IA: {behavior_class}", (20, 175), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 0, 255), 2)
+    cv2.putText(frame, alert, (20, 210), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
 
 
 def main():
@@ -124,16 +82,18 @@ def main():
     region_detector = RegionDetector(REGIONS)
     metrics = BehaviorMetrics()
     csv_logger = CSVLogger(DATA_FILE_PATH)
+    classifier = BehaviorClassifier()
 
     first_frame = camera.read()
     motion_detector.initialize(first_frame)
 
     last_csv_save = time.time()
+    behavior_class = "modelo_nao_treinado"
 
     while True:
         frame = camera.read()
 
-        motion_data, _ = motion_detector.detect(frame)
+        motion_data = motion_detector.detect(frame)
 
         if motion_data is not None:
             region = region_detector.detect_region(
@@ -144,9 +104,12 @@ def main():
         else:
             metrics.update(False, metrics.current_region)
 
+        if classifier.is_available():
+            behavior_class = classifier.predict(metrics.to_dict())
+
         draw_regions(frame)
         draw_motion(frame, motion_data)
-        draw_info(frame, metrics)
+        draw_info(frame, metrics, behavior_class)
 
         if time.time() - last_csv_save >= CSV_INTERVAL_SECONDS:
             csv_logger.save(metrics.to_dict())
