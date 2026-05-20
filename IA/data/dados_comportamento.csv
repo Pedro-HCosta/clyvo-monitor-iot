@@ -143,3 +143,8 @@ timestamp,regiao_atual,status,tempo_parado_seg,tempo_agua_seg,tempo_racao_seg,te
 2026-05-13 22:28:54,fora_das_regioes,SEM MOVIMENTO,18,47,145,80,71,83,73,2732
 2026-05-13 22:28:59,fora_das_regioes,SEM MOVIMENTO,23,47,145,80,71,83,73,2732
 2026-05-13 22:29:04,fora_das_regioes,SEM MOVIMENTO,28,47,145,80,71,83,73,2732
+2026-05-19 17:07:34,fora_das_regioes,SEM MOVIMENTO,4,0,0,0,0,0,0,0
+2026-05-19 17:07:39,fora_das_regioes,SEM MOVIMENTO,10,0,0,0,0,0,0,0
+2026-05-19 17:07:54,fora_das_regioes,SEM MOVIMENTO,1,0,0,0,0,1,0,2
+2026-05-19 17:07:59,fora_das_regioes,SEM MOVIMENTO,1,0,0,0,0,1,1,4
+2026-05-19 17:08:04,cama,SEM MOVIMENTO,0,0,0,1,0,1,4,6
