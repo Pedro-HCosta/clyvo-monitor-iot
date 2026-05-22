@@ -4,7 +4,7 @@ Este módulo coleta dados ambientais usando ESP32, DHT11 e LDR.
 
 ## Sensores
 
-- DHT11: temperatura e umidade
+- DHT22: temperatura e umidade
 - LDR: luminosidade ambiente
 
 ## Comunicação
@@ -33,7 +33,7 @@ clyvo/pet/ambiente
 - Adafruit Unified Sensor
 
 ## Configuração
-Edite o arquivo config.h:
+Edite no arquivo sketch.ino:
 ```
 #define WIFI_SSID "NOME_DA_SUA_REDE"
 #define WIFI_PASSWORD "SENHA_DA_SUA_REDE"

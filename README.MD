@@ -8,7 +8,7 @@ A solução combina sensores IoT, visão computacional e análise comportamental
 
 ## Estrutura do Projeto
 ```
-clyvo-monitor-iot-main/
+clyvo-monitor-iot/
 │
 ├── IA/
 │   ├── data/
@@ -18,8 +18,7 @@ clyvo-monitor-iot-main/
 │
 ├── IOT/
 │   ├── esp32/
-│   ├── dashboard/
-│   └── README.md
+│   └── dashboard/
 │
 ├── README.md
 └── requirements.txt
@@ -29,7 +28,7 @@ clyvo-monitor-iot-main/
 O módulo IoT é responsável pelo monitoramento ambiental utilizando ESP32 e sensores físicos.
 
 - ESP32
-- DHT11
+- DHT22
 - LDR
 - MQTT
 - Dashboard em Streamlit
@@ -132,3 +131,6 @@ Webcam
 - Alertas automáticos
 - Automação do ambiente
 - Melhorias no modelo de IA
+
+## Repositório
+https://github.com/Pedro-HCosta/clyvo-monitor-iot.git
